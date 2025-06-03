@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela com Divs</title>
+    <style>
+        .table-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%; /* Ajuste a largura conforme necessário */
+        }
+
+        .table-row {
+            display: flex;
+            width: 100%;
+        }
+
+        .table-header {
+            background-color: #000;
+            color: white;
+            display: flex;
+            width: 100%;
+        }
+
+        .table-cell {
+            padding: 8px;
+            text-align: center;
+            box-sizing: border-box; /* Garante que o padding não afete a largura */
+        }
+
+        .header-cell {
+            padding: 8px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .received-at {
+            width: 20%;
+        }
+
+        .destination, .status {
+            width: 15%;
+        }
+
+        .message {
+            flex-grow: 1; /* Ocupa o espaço restante */
+            text-align: left;
+        }
+
+        .pending-row {
+            background-color: #f8e218;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <div class="table-header">
+            <div class="header-cell received-at">Recebido em</div>
+            <div class="header-cell destination">Destino</div>
+            <div class="header-cell message">Mensagem</div>
+            <div class="header-cell status">Status</div>
+        </div>
+
+        <div class="table-row pending-row">
+            <div class="table-cell received-at">21-04-2025 - 16:45:57</div>
+            <div class="table-cell destination">ELETRONORTE</div>
+            <div class="table-cell message">Elevar a Geração da Usina para 5600 MW</div>
+            <div class="table-cell status">Pendente</div>
+        </div>
+
+        <div class="table-row">
+            <div class="table-cell received-at">21-04-2025 - 16:45:57</div>
+            <div class="table-cell destination">ELETRONORTE</div>
+            <div class="table-cell message">Elevar a Geração da Usina para 600 MW</div>
+            <div class="table-cell status">Confirmada</div>
+        </div>
+    </div>
+
+</body>
+</html>

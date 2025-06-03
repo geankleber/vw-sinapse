@@ -1,0 +1,78 @@
+curl -X POST "http://localhost:8000/mensagens" \
+-H "Content-Type: application/json" \
+-d '[
+    {
+        "dataAtualizacao": "2025-04-20T17:43:14.9520306+00:00",
+        "codigo": "20250417174308-N-3BT8Bw-ENT",
+        "origem": "COSR-NCO",
+        "destino": "COIGT",
+        "mensagem": "Tucuruí | Sincronizar 2 UG(s).",
+        "status": "Pendente",
+        "dataCadastro": "2025-04-17T17:43:08.1724123+00:00"
+    }
+]'
+
+resposta: {"status": "Mensagens recebidas com sucesso"}
+
+
+curl -X POST "http://localhost:8000/mensagens" \
+-H "Content-Type: application/json" \
+-d '[]'
+
+resposta: {"status": "Mensagens recebidas com sucesso"}
+
+
+curl -X POST "http://localhost:8000/mensagens" \
+-H "Content-Type: application/json" \
+-d '[
+    {
+        "dataAtualizacao": "2025-04-20T17:43:14.9520306+00:00",
+        "codigo": "20250417174308-N-3BT8Bw-ENT",
+        "origem": "COSR-NCO",
+        "destino": "ELETRONORTE",
+        "mensagem": "Tucuruí | Sincronizar 2 UG(s).",
+        "status": "Confirmada",
+        "dataCadastro": "2025-04-17T17:43:08.1724123+00:00"
+    },
+    {
+        "dataAtualizacao": "2025-04-21T10:15:00.0000000+00:00",
+        "codigo": "20250421101500-N-4CT9Cx-ENT",
+        "origem": "COSR-NCO",
+        "destino": "ELETRONORTE",
+        "mensagem": "Itaipu | Manutenção programada.",
+        "status": "Pendente",
+        "dataCadastro": "2025-04-21T10:14:50.0000000+00:00"
+    }
+]'
+
+resposta: {"status": "Mensagens recebidas com sucesso"}
+
+regra firewall powershell: New-NetFirewallRule -Name "Allow Port 8000" -DisplayName "Allow Port 8000" -Protocol TCP -LocalPort 8000 -Action Allow
+
+carregar o venv: source venv/bin/activate
+atualizar dependências: pip freeze > requirements.txt
+instalar dependências: pip install -r requirements.txt
+
+
+curl -X POST https://fastapi-app-887778569706.us-central1.run.app/send  \
+-H "Content-Type: application/json" \
+-d '[
+    {
+        "dataAtualizacao": "2025-04-20T17:43:14.9520306+00:00",
+        "codigo": "20250417174308-N-3BT8Bw-ENT",
+        "origem": "COSR-NCO",
+        "destino": "COIGT",
+        "mensagem": "Tucuruí | Sincronizar 2 UG(s).",
+        "status": "Pendente",
+        "dataCadastro": "2025-04-17T17:43:08.1724123+00:00"
+    }
+]'
+
+curl -X POST https://fastapi-app-887778569706.us-central1.run.app/send -H "Content-Type: application/json" -d '{"message": "Olá, esta é uma mensagem de teste!"}'
+
+https://fastapi-ons-887778569706.us-central1.run.app/
+
+curl -X POST "https://fastapi-ons-887778569706.us-central1.run.app/mensagens" \
+-H "Content-Type: application/json" \
+-d '[]'
+

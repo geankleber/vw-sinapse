@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitações Sinapse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #153556;
+            color: #fff;
+        }
+        h1 {
+            color: #fff;
+            text-align: center;
+        }
+        .mensagem {
+            background-color: #121212;
+            color: #fff;
+            padding:  5px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .mensagem p {
+            margin:  5px;
+        }
+        .mensagem.pendente {
+            background-color: #f8e218;
+            color: rgb(10, 10, 10); 
+        }
+        #mensagens {
+            margin-top: 0px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Solicitações do Sinapse</h1>
+    <div id="mensagens">
+        {% for msg in mensagens %}
+        <div class="mensagem {% if msg.status == 'Pendente' %}pendente{% endif %}">
+            <p><strong>Destino:</strong> {{ msg.destino }} | <strong>Status:</strong> {{ msg.status }} | <strong>Recebido em:</strong> {{ msg.data_recebimento }}</p>
+            <p><strong>Mensagem:</strong> {{ msg.mensagem }}</p>
+        </div>
+        {% else %}
+        <p>Nenhuma mensagem recebida.</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        const ws = new WebSocket("ws://localhost:8000/ws");
+
+        ws.onmessage = function(event) {
+            const mensagens = JSON.parse(event.data);
+            const container = document.getElementById("mensagens");
+            container.innerHTML = ""; // Limpa o conteúdo atual
+
+            if (mensagens.length === 0) {
+                container.innerHTML = "<p>Nenhuma mensagem recebida.</p>";
+                return;
+            }
+
+            mensagens.forEach(msg => {
+                const div = document.createElement("div");
+                div.className = "mensagem" + (msg.status === "Pendente" ? " pendente" : "");
+                div.innerHTML = `
+                    <p><strong>Destino:</strong> ${msg.destino} | <strong>Status:</strong> ${msg.status} | <strong>Recebido em:</strong> ${msg.data_recebimento}</p>
+                    <p><strong>Mensagem:</strong> ${msg.mensagem}</p>
+                `;
+                container.appendChild(div);
+            });
+        };
+
+        ws.onclose = function() {
+            console.log("Conexão WebSocket fechada. Tentando reconectar...");
+            setTimeout(() => {
+                location.reload(); // Recarrega a página para tentar reconectar
+            }, 3000);
+        };
+
+        ws.onerror = function(error) {
+            console.error("Erro no WebSocket:", error);
+        };
+    </script>
+</body>
+</html>
